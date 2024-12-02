@@ -1,0 +1,16 @@
+---
+- name: Micro-TP n°3
+  hosts: fedoracli
+  become: true
+
+  tasks:
+    - name: Installation d'un serveur Redis
+      ansible.builtin.package:
+        name: redis
+        state: present
+
+    - name: Configuration du service
+      ansible.builtin.service:
+        name: redis
+        enabled: true
+        state: started
