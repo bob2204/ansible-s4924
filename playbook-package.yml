@@ -1,0 +1,12 @@
+---
+- name: Install avec apt
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Installation de acl
+      ansible.builtin.package:
+        update_cache: true
+        name: acl
+        state: present
+      become: true
