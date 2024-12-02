@@ -1,0 +1,8 @@
+---
+- name: Acte-I
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ping vers les cibles
+      ping:
