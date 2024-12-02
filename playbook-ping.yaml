@@ -6,3 +6,4 @@
   tasks:
     - name: Ping vers les cibles
       ping:
+        data: OK
