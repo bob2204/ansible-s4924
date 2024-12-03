@@ -1,0 +1,32 @@
+---
+- name: Clauses when
+  hosts: all
+
+  tasks:
+    - name: Affichage du hostname uniquement sur distribution Debian
+      ansible.builtin.debug:
+        msg: "Hostname: {{ ansible_hostname }}"
+      when:
+        - ansible_distribution == 'Debian' or ansible_distribution_version | int == 11
+
+    - name: Block...when
+      block:
+        - name: Affichage du hostname uniquement sur distribution Debian
+          ansible.builtin.debug:
+            msg: "Hostname: {{ ansible_hostname }}"
+
+        - name: Affichage du codename sur les mêmes conditions
+          ansible.builtin.debug:
+            msg: "Codename: {{ ansible_distribution_release }}"
+      when:
+        - ansible_distribution == 'Debian' or ansible_distribution_version | int == 11
+
+    - name: Module shell
+      ansible.builtin.shell: grep docker /et/passwd
+      register: result
+      changed_when: false
+      failed_when: result.rc > 1
+
+    - name: Affichage de result
+      ansible.builtin.debug:
+        msg: "Result.rc: {{ result.rc }}"
