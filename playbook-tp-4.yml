@@ -12,13 +12,13 @@
 
     - name: Reconfiguration directive bind dans /etc/redis/redis.conf
       ansible.builtin.lineinfile:
-        dest: /etc/redis/redis.conf
+        dest: "{{ redis_config_filename }}"
         regex: ^bind 127.0.0.1
         line: bind 0.0.0.0
 
     - name: Désactivation du mode protected
       ansible.builtin.lineinfile:
-        dest: /etc/redis/redis.conf
+        dest: "{{ redis_config_filename }}"
         regex: ^protected-mode on
         line: protected-mode no
 
