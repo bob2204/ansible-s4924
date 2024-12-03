@@ -1,0 +1,39 @@
+---
+- name: Les variables
+  hosts: all
+  gather_facts: false
+
+  vars:
+    stage: Ansible
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Affichage de stage
+      ansible.builtin.debug:
+        msg: "Stage: {{ stage }}"
+      tags: never
+
+    - name: Inclusion de variables
+      ansible.builtin.include_vars:
+        file: logins.yml
+      tags: never
+
+    - name: Affichage de logins
+      ansible.builtin.debug:
+        msg: "Logins: {{ logins }}"
+      tags: never
+
+    - name: Valeur par défaut
+      ansible.builtin.debug:
+        msg: "Nb_stagiaires: {{ nb_stagiaires | default(0) }}"
+      tags: never
+
+    - name: Variable groups
+      ansible.builtin.debug:
+        msg: "Groups: {{ groups.www }}"
+
+    - name: Variable hostvars
+      ansible.builtin.debug:
+        msg: "Hostvars: {{ hostvars }}"

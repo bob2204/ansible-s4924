@@ -1,0 +1,19 @@
+---
+logins:
+  - login: bob
+    uid: 2000
+    gid: 2000
+    home: /home/bob
+    groups:
+      - admin
+      - devops
+      - wheel
+    shell: /bin/bash
+  - login: curt
+    uid: 2100
+    gid: 2100
+    home: /home/curt
+    groups:
+      - info
+      - dev
+    shell: /bin/bash
