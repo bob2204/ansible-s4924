@@ -1,0 +1,12 @@
+---
+- name: Création de groupes dynamiques
+  hosts: all
+
+  tasks:
+    - name: Group By
+      ansible.builtin.group_by:
+        key: "{{ ansible_distribution | lower }}"
+
+    - name: Affichage
+      ansible.builtin.debug:
+        msg: "{{ groups }}"

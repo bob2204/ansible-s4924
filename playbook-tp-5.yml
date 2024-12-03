@@ -4,6 +4,14 @@
   become: true
 
   tasks:
+    - name: Group By
+      ansible.builtin.group_by:
+        key: "{{ ansible_distribution | lower }}"
+
+    #- name: Include variabilisé
+    #  ansible.builtin.include_vars:
+    #    file: "group_vars/{{ ansible_distribution | lower }}.yml"
+
     - name: Installation
       ansible.builtin.package:
         name: "{{ apache_package_name }}"
