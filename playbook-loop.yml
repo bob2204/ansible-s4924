@@ -1,0 +1,12 @@
+---
+- name: La clause loop
+  hosts: debycli
+
+  tasks:
+    - name: Liste de couleurs
+      ansible.builtin.debug:
+        msg: "Couleur: {{ item }}"
+      loop:
+        - Marron
+        - Violette
+        - Rose
