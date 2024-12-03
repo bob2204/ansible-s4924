@@ -15,5 +15,5 @@ logins:
     home: /home/curt
     groups:
       - info
-      - dev
+      - devops
     shell: /bin/bash
