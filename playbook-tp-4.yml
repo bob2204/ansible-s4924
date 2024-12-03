@@ -1,0 +1,28 @@
+---
+- name: Reconfiguration du service Redis pour accès distant
+  hosts: fedoracli
+  become: true
+
+  tasks:
+    - name: Désactivation du service firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
+        enabled: false
+
+    - name: Reconfiguration directive bind dans /etc/redis/redis.conf
+      ansible.builtin.lineinfile:
+        dest: /etc/redis/redis.conf
+        regex: ^bind 127.0.0.1
+        line: bind 0.0.0.0
+
+    - name: Désactivation du mode protected
+      ansible.builtin.lineinfile:
+        dest: /etc/redis/redis.conf
+        regex: ^protected-mode on
+        line: protected-mode no
+
+    - name: Redémarrage du service redis
+      ansible.builtin.service:
+        name: redis
+        state: restarted
