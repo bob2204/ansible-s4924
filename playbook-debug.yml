@@ -6,5 +6,5 @@
   tasks:
     - name: Debug
       ansible.builtin.debug:
-        msg: "Variable: {{ ansible_host }}"
-        verbosity: 3 
+        msg: "Stage: {{ stage }}"
+        verbosity: 0 
