@@ -13,20 +13,25 @@
     - name: Reconfiguration directive bind dans /etc/redis/redis.conf
       ansible.builtin.lineinfile:
         dest: "{{ redis_config_filename }}"
-        regex: ^bind 0.0.0.0
-        line: bind 192.168.56.246
-      register: result_bind
+        regex: ^bind 192.
+        line: bind 0.0.0.0
+      notify:
+        - restart_redis
+
+    - meta: flush_handlers
 
     - name: Désactivation du mode protected
       ansible.builtin.lineinfile:
         dest: "{{ redis_config_filename }}"
         regex: ^protected-mode on
         line: protected-mode no
-      register: result_protected
+      notify:
+        - restart_redis
 
+  handlers:
     - name: Redémarrage du service redis
       ansible.builtin.service:
         name: redis
         state: restarted
-      when:
-        - result_bind.changed == true or result_protected.changed == true
+      listen:
+        - restart_redis
