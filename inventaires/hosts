@@ -3,3 +3,9 @@ debycli
 
 [php]
 fedoracli
+
+[debian]
+debycli
+
+[fedora]
+fedoracli
