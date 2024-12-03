@@ -5,8 +5,11 @@
   tasks:
     - name: Liste de couleurs
       ansible.builtin.debug:
-        msg: "Couleur: {{ item }}"
+        msg: "Couleur n°{{ nb + 1 }}: {{ couleur }}"
       loop:
         - Marron
         - Violette
         - Rose
+      loop_control:
+        loop_var: couleur
+        index_var: nb
