@@ -1,0 +1,10 @@
+---
+- name: Module debug
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "Variable: {{ ansible_host }}"
+        verbosity: 3 
