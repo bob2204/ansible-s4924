@@ -1,0 +1,16 @@
+---
+- name: Installation d'un serveur Apache
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Installation
+      ansible.builtin.package:
+        name: "{{ apache_package_name }}"
+        state: present
+
+    - name: Configuration
+      ansible.builtin.service:
+        name: "{{ apache_service_name }}"
+        state: started
+        enabled: true
