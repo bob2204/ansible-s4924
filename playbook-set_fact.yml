@@ -1,0 +1,14 @@
+---
+- name: Création de variables/facts
+  hosts: debycli
+  gather_facts: false
+
+  tasks:
+    - name: Création de la variable cluster_name
+      ansible.builtin.set_fact:
+        cluster_name: labo
+        cacheable: true
+
+    - name: Affichage
+      ansible.builtin.debug:
+        msg: "Cluster: {{ cluster_name }}"
