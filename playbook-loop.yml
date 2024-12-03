@@ -13,3 +13,30 @@
       loop_control:
         loop_var: couleur
         index_var: nb
+
+    - name: Liste des interfaces
+      ansible.builtin.debug:
+        msg: "Interface: {{ iface }}"
+      loop: "{{ ansible_interfaces | sort }}"
+      loop_control:
+        loop_var: iface
+      when: iface != 'lo'
+
+    - name: Simulacre de block...loop
+      ansible.builtin.include_tasks:
+        file: tasks.yml
+      loop:
+        - iteration_1
+        - iteration_2
+
+    - name: Inclusion logins.yml
+      ansible.builtin.include_vars:
+        file: logins.yml
+      tags: login
+
+    - name: Boucles imbriquées
+      ansible.builtin.debug:
+        msg: "{{ item.0.login }} {{ item.1 }}"
+      loop: "{{ logins | subelements('groups') }}"
+      tags: login
+      
