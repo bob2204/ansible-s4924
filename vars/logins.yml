@@ -2,18 +2,20 @@
 logins:
   - login: bob
     uid: 2000
-    gid: 2000
+    group: bob
     home: /home/bob
     groups:
       - admin
       - devops
       - wheel
     shell: /bin/bash
+    password: azerty
   - login: curt
     uid: 2100
-    gid: 2100
+    group: curt
     home: /home/curt
     groups:
       - info
       - devops
     shell: /bin/bash
+    password: azerty
