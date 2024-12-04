@@ -1,0 +1,83 @@
+---
+- name: Installation infra HTTP/PHP
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Group By
+      ansible.builtin.group_by:
+        key: "{{ ansible_distribution | lower }}"
+
+    - name: Installation/configuration Nginx sur groupe www
+      when: inventory_hostname in groups.www
+      block:
+      - name: Installation du serveur Nginx
+        ansible.builtin.package:
+          name: "{{ nginx_package_name }}"
+
+      - name: Configuration du service nginx
+        ansible.builtin.systemd_service:
+          name: "{{ nginx_service_name }}"
+          state: started
+          enabled: true
+
+      - name: Fichier de configuration de Nginx
+        ansible.builtin.template:
+          src: nginx-conf/default
+          dest: /etc/nginx/sites-available
+          mode: "0644"
+          backup: true
+        notify: restart_nginx
+
+    - name: Installation/configuration PHP-FPM sur groupe php
+      when: inventory_hostname in groups.php
+      block:
+      - name: Désactivation/arrêt du service firewalld
+        ansible.builtin.systemd_service:
+          name: firewalld
+          state: stopped
+          enabled: false
+
+      - name: Installation du serveur php-fpm
+        ansible.builtin.package:
+          name: "{{ php_fpm_package_name }}"
+
+      - name: Configuration du service php-fpm
+        ansible.builtin.systemd_service:
+          name: "{{ php_fpm_service_name }}"
+          state: started
+          enabled: true
+
+      - name: Directive listen
+        ansible.builtin.lineinfile:
+          regex: ^listen = /run/php-fpm/www.sock
+          line: "listen = {{ ansible_all_ipv4_addresses | regex_search('192.168.[.0-9]+') }}:9000"
+          dest: /etc/php-fpm.d/www.conf
+        notify: restart_php
+
+      - name: Directive listen.allowed_clients
+        ansible.builtin.lineinfile:
+          backrefs: true
+          state: present
+          regex: ^(listen\.allowed_clients.*)$
+          line: ;\1
+          dest: /etc/php-fpm.d/www.conf
+        notify: restart_php
+
+    - name: Copie des fichiers de site
+      ansible.builtin.copy:
+        src: html/
+        dest: /var/www/html
+
+  handlers:
+    - name: Restart Nginx
+      ansible.builtin.systemd_service:
+        name: nginx
+        state: restarted
+      listen: restart_nginx
+
+    - name: Restart PHP-FPM
+      ansible.builtin.systemd_service:
+        name: php-fpm
+        state: restarted
+      listen: restart_php

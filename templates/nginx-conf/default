@@ -17,7 +17,7 @@ server {
 	#
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
-		fastcgi_pass 192.168.56.246:9000;
+		fastcgi_pass {{ php_server_name }}:9000;
 	}
 }
 
