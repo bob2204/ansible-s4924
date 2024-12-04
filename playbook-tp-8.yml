@@ -8,6 +8,7 @@
       ansible.builtin.file:
         name: /var/www/html/infos.txt
         state: absent
+      tags: never
 
     - name: Liste des interfaces
       ansible.builtin.lineinfile:
@@ -19,3 +20,11 @@
       loop_control:
         loop_var: iface
       when: iface != 'lo'
+      tags: never
+
+    - name: Liste des interfaces (template)
+      ansible.builtin.template:
+        src: infos.txt
+        dest: /var/www/html/
+        mode: 0644
+        owner: www-data
