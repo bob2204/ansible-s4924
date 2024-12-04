@@ -1,0 +1,47 @@
+---
+- name: Les lookups Ansible
+  hosts: debycli
+
+  vars:
+    agence_toulouse: ansible
+    agence_lyon: office
+    agence_montpellier: docker
+    centres:
+      - toulouse
+      - montpellier
+      - lyon
+
+  tasks:
+    - name: DNS
+      ansible.builtin.debug:
+        msg: "Kernel.org: {{ lookup('dig','kernel.org') }}"
+
+    - name: ENV
+      ansible.builtin.debug:
+        msg: "PATH: {{ lookup('env','PATH') }}"
+
+    - name: PATH distant
+      ansible.builtin.debug:
+        msg: "PATH: {{ ansible_env['PATH'] }}"
+
+    - name: FILE
+      ansible.builtin.debug:
+        msg: "/etc/hosts: {{ lookup('file','/etc/hosts').split('\n')[-2] }}"
+
+    - name: Template
+      ansible.builtin.debug:
+        msg: "nginx-default: {{ lookup('template','templates/nginx-conf/default') }}"
+
+    - name: Liste des formations
+      ansible.builtin.debug:
+        msg: "agence_{{ item }}: {{ lookup('vars','agence_'+item) }}"
+      loop: "{{ centres }}"
+      tags: eval
+
+    - name: Création d'une variable à partir d'un lookup
+      ansible.builtin.set_fact:
+        path: "{{ lookup('env','PATH') }}"
+
+    - name: PATH
+      ansible.builtin.debug:
+        msg: "PATH: {{ path }}"
