@@ -1,0 +1,21 @@
+---
+- name: Micro-TP n°8
+  hosts: debycli
+  become: true
+
+  tasks:
+    - name: Suppression du fichier /var/www/html/infos.txt
+      ansible.builtin.file:
+        name: /var/www/html/infos.txt
+        state: absent
+
+    - name: Liste des interfaces
+      ansible.builtin.lineinfile:
+        create: true
+        dest: /var/www/html/infos.txt
+        line: "{{ iface }}: {{ lookup('vars','ansible_'+iface).ipv4.address }}"
+        mode: 0644
+      loop: "{{ ansible_interfaces | sort }}"
+      loop_control:
+        loop_var: iface
+      when: iface != 'lo'
