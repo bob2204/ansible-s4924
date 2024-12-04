@@ -1,0 +1,17 @@
+---
+- name: Notion de délégation
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Liste des interfaces
+      ansible.builtin.lineinfile:
+        create: true
+        dest: /var/www/html/infos_all.txt
+        line: "{{ inventory_hostname }}-{{ iface }}: {{ lookup('vars','ansible_'+iface).ipv4.address }}"
+        mode: 0644
+      loop: "{{ ansible_interfaces | sort }}"
+      loop_control:
+        loop_var: iface
+      when: iface != 'lo'
+      delegate_to: debycli
