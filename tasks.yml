@@ -1,0 +1,7 @@
+- name: Task-I
+  ansible.builtin.debug:
+    msg: "task-I: {{ item }}"
+
+- name: Task-II
+  ansible.builtin.debug:
+    msg: "task-II: {{ item }}"
