@@ -1,0 +1,13 @@
+---
+- name: Des filtres Ansible
+  hosts: debycli
+
+
+  tasks:
+    - name: I
+      ansible.builtin.debug:
+        msg: "{{ 'Coucou' | upper }}"
+
+    - name: II
+      ansible.builtin.debug:
+        msg: "{{ 'azerty' | password_hash(hashtype='sha512',rounds=2000,salt='P5R9EPf9ETIPS2lS') }}"
