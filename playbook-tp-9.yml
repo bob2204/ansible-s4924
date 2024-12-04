@@ -1,0 +1,27 @@
+---
+- name: Micro-TP n°9
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Liste des interfaces
+      ansible.builtin.lineinfile:
+        create: true
+        dest: /tmp/hosts
+        line: "{{ lookup('vars','ansible_'+iface).ipv4.address }} {{ ansible_hostname }}"
+        mode: 0644
+      loop: "{{ ansible_interfaces | sort }}"
+      loop_control:
+        loop_var: iface
+      when:
+        - iface != 'lo'
+        - lookup('vars','ansible_'+iface).ipv4.address | regex_search('^192.168.56') 
+      delegate_to: localhost
+      become: false
+
+    - name: Concaténation des lignes du fichier /tmp/hosts dans le /etc/hosts de chaque cible
+      ansible.builtin.lineinfile:
+        dest: /etc/hosts
+        backup: true
+        line: "{{ item }}"
+      loop: "{{ lookup('file','/tmp/hosts').split('\n') }}"
