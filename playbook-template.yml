@@ -1,0 +1,13 @@
+---
+- name: Les templates
+  hosts: debycli
+
+  tasks:
+    - name: Exemple de template
+      ansible.builtin.template:
+        src: exemple.txt.j2
+        dest: /var/www/html/exemple.txt
+        mode: 0644
+        owner: www-data
+      become: true
+

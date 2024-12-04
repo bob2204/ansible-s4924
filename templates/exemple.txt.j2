@@ -1,0 +1,13 @@
+{# Commentaire... #}
+
+Hostname: {{ ansible_hostname }}
+Distribution: {% if ansible_os_family != 'Debian' %}
+Supportée
+{% else %}
+Non supportée
+{% endif %}
+
+Versions Python:
+{% for version in ansible_python.version_info %}
+- {{ version }}
+{% endfor %} 
