@@ -10,9 +10,19 @@
       state: stopped
       enabled: false
 
+  - name: SELinux en mode permissive
+    ansible.builtin.selinux:
+      policy: targeted
+      state: permissive
+
   - name: Installation du serveur php-fpm
     ansible.builtin.package:
       name: "{{ lookup('vars','php_fpm_package_name_'+ansible_os_family|lower) }}"
+
+  - name: Installation du paquet php_mysql
+    ansible.builtin.package:
+      name: "{{ lookup('vars','php_mysql_package_name_'+ansible_os_family|lower) }}"
+    notify: restart_php
 
   - name: Configuration du service php-fpm
     ansible.builtin.systemd_service:

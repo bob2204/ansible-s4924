@@ -12,8 +12,21 @@
       role: php-fpm
       when: inventory_hostname in groups.php
 
+    - name: Installation/Configuration Mariadb
+      role: geerlingguy.mysql
+      mysql_databases:
+        - name: stage
+      mysql_users:
+        - name: bob
+          host: "%"
+          password: azerty
+          priv: stage.*:ALL
+      when: inventory_hostname in groups.www
+      tags: mariadb
+
   post_tasks:
     - name: Copie des fichiers de site
       ansible.builtin.copy:
         src: html/
         dest: /var/www/html
+      tags: copy_site

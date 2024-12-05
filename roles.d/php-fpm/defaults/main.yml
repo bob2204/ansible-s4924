@@ -6,3 +6,6 @@ php_fpm_package_name_redhat: php-fpm
 
 php_fpm_service_name_debian: php-fpm
 php_fpm_service_name_redhat: php-fpm
+
+php_mysql_package_name_debian: php-mysql
+php_mysql_package_name_redhat: php-mysqlnd
