@@ -1,0 +1,27 @@
+---
+- name: Micro-TP n°6
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Inclusion de la variable logins
+      ansible.builtin.include_vars:
+        file: logins.yml
+
+    - name: Création des groupes, si nécessaire
+      ansible.builtin.group:
+        name: "{{ item.1 }}"
+        state: present
+      loop: "{{ logins | subelements('groups') }}"
+
+    - name: Création des comptes
+      ansible.builtin.user:
+        name: "{{ item.login }}"
+        home: "{{ item.home }}"
+        shell: "{{ item.shell }}"
+        group: "{{ item.group }}"
+        groups: "{{ item.groups }}"
+        uid: "{{ item.uid }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+      loop: "{{ logins }}"
+      no_log: true
