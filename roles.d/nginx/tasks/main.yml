@@ -1,6 +1,11 @@
 ---
 # tasks file for roles.d/nginx
 
+- name: Vérification des pré-requis
+  ansible.builtin.assert:
+    that: ansible_distribution in ('Debian','RedHat')
+    fail_msg: "Distribution non supportée ({{ ansible_distribution }})!"
+
 - name: Installation/configuration Nginx sur groupe www
   when: inventory_hostname in groups.www
   block:
