@@ -1,0 +1,32 @@
+---
+- name: Block rescue always
+  hosts: all
+
+  tasks:
+    - name: Block
+      block:
+        - name: Task I
+          ansible.builtin.debug:
+            msg: "OK"
+
+        - name: Task II
+          ansible.builtin.debug:
+            msg: "KO"
+          failed_when: true
+
+        - name: Task III
+          ansible.builtin.debug:
+            msg: "OK"
+      rescue:
+        - name: Deuxième chance
+          ansible.builtin.debug:
+            msg: "Ouf ! ({{ ansible_failed_task.name }})"
+          failed_when: true
+      always:
+        - name: Task éternelle
+          ansible.builtin.debug:
+            msg: "Tâche éternelle"
+
+    - name: Task IV
+      ansible.builtin.debug:
+        msg: "On continue"
