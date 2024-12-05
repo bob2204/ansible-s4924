@@ -1,0 +1,8 @@
+---
+# tasks file for roles.d/demo
+
+- name: Task-I
+  ansible.builtin.debug:
+    msg: "Task I : {{ demo_var }}"
+  changed_when: true
+  notify: demo_handler

@@ -1,0 +1,26 @@
+---
+- name: Utilisation d'un rôle
+  hosts: all
+
+  roles:
+    - name: Rôle demo
+      role: demo
+      demo_var: mon_contenu
+
+  pre_tasks:
+    - name: On commence
+      ansible.builtin.debug:
+        msg: "Au boulot !"
+
+  post_tasks:
+    - name: Fini !
+      ansible.builtin.debug:
+        msg: "Fini !"
+      notify: h1
+      changed_when: true
+
+  handlers:
+    - name: H1
+      ansible.builtin.debug:
+        msg: "H1"
+      listen: h1

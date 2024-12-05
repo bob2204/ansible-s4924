@@ -1,0 +1,8 @@
+---
+# defaults file for roles.d/demo
+
+# Variable demo_var...
+demo_var: default_value
+stagiaires: {}
+tableau: []
+
