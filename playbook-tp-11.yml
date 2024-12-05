@@ -1,0 +1,19 @@
+---
+- name: Micro-TP n°11
+  hosts: all
+  become: true
+
+  roles:
+    - name: Installation/Configuration Nginx
+      role: nginx
+      when: inventory_hostname in groups.www
+
+    - name: Installation/Configuration Php-fpm
+      role: php-fpm
+      when: inventory_hostname in groups.php
+
+  post_tasks:
+    - name: Copie des fichiers de site
+      ansible.builtin.copy:
+        src: html/
+        dest: /var/www/html

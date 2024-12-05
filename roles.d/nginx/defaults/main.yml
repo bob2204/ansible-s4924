@@ -1,0 +1,8 @@
+---
+# defaults file for roles.d/nginx
+
+nginx_package_name_debian: nginx
+nginx_package_name_redhat: nginx
+
+nginx_service_name_debian: nginx
+nginx_service_name_redhat: nginx

@@ -1,0 +1,23 @@
+---
+# tasks file for roles.d/nginx
+
+- name: Installation/configuration Nginx sur groupe www
+  when: inventory_hostname in groups.www
+  block:
+  - name: Installation du serveur Nginx
+    ansible.builtin.package:
+      name: "{{ lookup('vars','nginx_package_name_'+ansible_os_family|lower) }}"
+
+  - name: Configuration du service nginx
+    ansible.builtin.systemd_service:
+      name: "{{ lookup('vars','nginx_service_name_'+ansible_os_family|lower) }}"
+      state: started
+      enabled: true
+
+  - name: Fichier de configuration de Nginx
+    ansible.builtin.template:
+      src: nginx-conf/default
+      dest: /etc/nginx/sites-available
+      mode: "0644"
+      backup: true
+    notify: restart_nginx
