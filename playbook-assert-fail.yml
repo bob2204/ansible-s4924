@@ -1,0 +1,21 @@
+---
+- name: Modules assert et fail
+  hosts: all
+
+  tasks:
+    - name: Vérification des distributions
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == 'Debian'
+          - ansible_distribution_version <= '12'
+        success_msg: Distribution OK
+        fail_msg: Distribution non supportée
+
+    - name: On continue
+      ansible.builtin.debug:
+        msg: "Ouf !"
+
+    - name: Module fail
+      ansible.builtin.debug:
+        msg: "Pas glop !"
+      failed_when: jour == 'jeudi'
