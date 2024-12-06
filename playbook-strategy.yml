@@ -1,0 +1,21 @@
+---
+- name: Test de strategies
+  hosts: all
+  strategy: free
+
+  tasks:
+    - name: Tâche Random
+      ansible.builtin.shell: bash -c 'sleep $((RANDOM%10))'
+
+    - name: Tâche Random
+      ansible.builtin.shell: bash -c 'sleep $((RANDOM%10))'
+
+    - name: Tâche Random
+      ansible.builtin.shell: bash -c 'sleep $((RANDOM%10))'
+
+    - name: Tâche Random
+      ansible.builtin.shell: bash -c 'sleep $((RANDOM%10))'
+
+    - name: Tâche Random
+      ansible.builtin.shell: bash -c 'sleep $((RANDOM%10))'
+
