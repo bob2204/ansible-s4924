@@ -4,7 +4,7 @@
 
   tasks:
     - name: Copie du fichier pull.txt
-      ansible.builtin.copy:
+      ansible.builtin.template:
         src: pull.txt
         dest: /tmp
 
