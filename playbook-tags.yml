@@ -1,0 +1,46 @@
+---
+- name: Les tags
+  hosts: debycli
+
+  tasks:
+    - name: Task-I
+      ansible.builtin.debug:
+        msg: "Task-I"
+      tags:
+        - t-1
+
+    - name: Task-II
+      ansible.builtin.debug:
+        msg: "Task-II"
+      tags:
+        - t-1
+        - t-2
+
+    - name: Task-III
+      ansible.builtin.debug:
+        msg: "Task-III"
+
+    - name: Task-IV
+      ansible.builtin.debug:
+        msg: "Task-IV"
+      tags: never
+
+    - name: Task-V
+      ansible.builtin.debug:
+        msg: "Task-V"
+      tags: always
+
+- name: Les tags (suite et fin)
+  hosts: debycli
+  tags: acte-2
+
+  tasks:
+    - name: Task-I
+      ansible.builtin.debug:
+        msg: "Task-I"
+      tags: t-1-act-2
+
+    - name: Task-II
+      ansible.builtin.debug:
+        msg: "Task-II"
+
