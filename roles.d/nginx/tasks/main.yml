@@ -12,12 +12,18 @@
   - name: Installation du serveur Nginx
     ansible.builtin.package:
       name: "{{ lookup('vars','nginx_package_name_'+ansible_os_family|lower) }}"
+    tags:
+      - nginx_install
+      - nginx
 
   - name: Configuration du service nginx
     ansible.builtin.systemd_service:
       name: "{{ lookup('vars','nginx_service_name_'+ansible_os_family|lower) }}"
       state: started
       enabled: true
+    tags:
+      - nginx_install
+      - nginx
 
   - name: Fichier de configuration de Nginx
     ansible.builtin.template:
@@ -26,3 +32,6 @@
       mode: "0644"
       backup: true
     notify: restart_nginx
+    tags:
+      - nginx_config
+      - nginx

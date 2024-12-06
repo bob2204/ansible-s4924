@@ -14,26 +14,40 @@
       name: firewalld
       state: stopped
       enabled: false
+    tags:
+      - always
 
   - name: SELinux en mode permissive
     ansible.builtin.selinux:
       policy: targeted
       state: permissive
+    tags:
+      - always
 
   - name: Installation du serveur php-fpm
     ansible.builtin.package:
       name: "{{ lookup('vars','php_fpm_package_name_'+ansible_os_family|lower) }}"
+    tags:
+      - php_install
+      - php
 
   - name: Installation du paquet php_mysql
     ansible.builtin.package:
       name: "{{ lookup('vars','php_mysql_package_name_'+ansible_os_family|lower) }}"
     notify: restart_php
+    tags:
+      - php_install
+      - php_mysql_install
+      - php
 
   - name: Configuration du service php-fpm
     ansible.builtin.systemd_service:
       name: "{{ lookup('vars','php_fpm_service_name_'+ansible_os_family|lower) }}"
       state: started
       enabled: true
+    tags:
+      - php_install
+      - php
 
   - name: Directive listen
     ansible.builtin.lineinfile:
@@ -41,6 +55,9 @@
       line: "listen = {{ ansible_all_ipv4_addresses | regex_search('192.168.[.0-9]+') }}:9000"
       dest: /etc/php-fpm.d/www.conf
     notify: restart_php
+    tags:
+      - php_config
+      - php
 
   - name: Directive listen.allowed_clients
     ansible.builtin.lineinfile:
@@ -50,3 +67,6 @@
       line: ;\1
       dest: /etc/php-fpm.d/www.conf
     notify: restart_php
+    tags:
+      - php_config
+      - php
