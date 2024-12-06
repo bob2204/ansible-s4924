@@ -1,0 +1,9 @@
+---
+- name: Module maison
+  hosts: localhost
+
+
+  tasks:
+    - name: Module modtest maison
+      modtest:
+        name: modtest
