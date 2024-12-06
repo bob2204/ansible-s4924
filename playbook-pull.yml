@@ -1,6 +1,6 @@
 ---
 - name: Exemple de pull
-  hosts: fedoracli
+  hosts: all
 
   tasks:
     - name: Copie du fichier pull.txt
