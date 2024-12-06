@@ -1,0 +1,10 @@
+---
+- name: Exemple de pull
+  hosts: all
+
+  tasks:
+    - name: Copie du fichier pull.txt
+      ansible.builtin.copy:
+        src: pull.txt
+        dest: /tmp
+
